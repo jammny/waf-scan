@@ -14,7 +14,7 @@ python waf-scan.py -f targets.txt
 # 结果输出 #
 `/report/`目录下会生成对应目标的json结果文件。
 ```
-
+![img.png](img.png)
 ## 程序兼容性
 
 python版本 >=  3.8.0

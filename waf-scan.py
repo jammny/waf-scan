@@ -27,8 +27,8 @@ app = Typer()
 
 @app.command()
 def main(
-        target: str = Option(None, "--target", "-t", help="扫描单个目标.", ),
-        file: str = Option(None, "--file", "-f", help="扫描单个目标.", ),
+        target: str = Option(None, "--target", "-t", help="输入单个URL.", ),
+        file: str = Option(None, "--file", "-f", help="多个目标文件内分行即可.", ),
 ):
     print(BANNER)  # 输出Banner图案
     target_list: List[str] = args_check(target, file)    # 参数检测
