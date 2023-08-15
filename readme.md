@@ -12,7 +12,7 @@ python waf-scan.py -t https://example.com
 python waf-scan.py -f targets.txt
 
 # 结果输出 #
-`/reports/`目录下会生成对应目标的json结果文件。
+`/report/`目录下会生成对应目标的json结果文件。
 ```
 
 ## 程序兼容性

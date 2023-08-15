@@ -7,6 +7,7 @@
 from time import time
 from pathlib import Path
 import re
+from typing import Optional
 
 import httpx
 from pluginbase import PluginBase
@@ -197,7 +198,7 @@ class WAFScan(object):
             plugin_dict[plugin_name] = plugin_source.load_plugin(plugin_name)
         return plugin_dict
 
-    def buildResultRecord(self, url: str, waf_result: str) -> dict:
+    def buildResultRecord(self, url: str, waf_result: Optional[str]) -> dict:
         """生成dict类型的识别结果
 
         :param url:
@@ -206,7 +207,7 @@ class WAFScan(object):
         """
         result = {'url': url}
         if waf_result:
-            result['detected'] = True
+            result['detected'] = 'True'
             if 'generic' in waf_result:
                 result['firewall'] = 'Generic'
                 result['manufacturer'] = 'Unknown'
@@ -214,7 +215,7 @@ class WAFScan(object):
                 result['firewall'] = waf_result.split('(')[0].strip()
                 result['manufacturer'] = waf_result.split('(')[1].replace(')', '').strip()
         else:
-            result['detected'] = False
+            result['detected'] = 'False'
             result['firewall'] = 'None'
             result['manufacturer'] = 'None'
         return result
@@ -262,7 +263,7 @@ class WAFScan(object):
             if self.genericdetect(target):
                 self.waf_results.append(self.buildResultRecord(target, 'generic'))
             else:
-                self.waf_results.append(self.buildResultRecord(target, 'None'))
+                self.waf_results.append(self.buildResultRecord(target, None))
         return self.waf_results
 
     def show_table(self) -> None:
