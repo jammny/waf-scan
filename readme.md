@@ -9,7 +9,7 @@
 python waf-scan.py -t https://example.com
 
 # 对多个目标进行扫描 #
-python jws-cli.py -f targets.txt
+python waf-scan.py -f targets.txt
 
 # 结果输出 #
 `/reports/`目录下会生成对应目标的json结果文件。
