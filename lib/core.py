@@ -57,7 +57,7 @@ class WAFScan(object):
             response = httpx.get(url=url, params=params, headers=self.headers, verify=False, follow_redirects=True)
             return response
         except Exception as e:
-            logger.error(f"{url} {e}")
+            # logger.error(f"{url} {e}")
             return
 
     def matchHeader(self, headermatch, attack=True) -> bool:
@@ -231,7 +231,7 @@ class WAFScan(object):
         self.original_response = self.send_request(url=target)
         if not self.original_response:   # 如果目标访问失败，就直接退出
             logger.error(f"{target} connect error!")
-            return self.waf_results
+            return
 
         # 第一次试探性的测试WAF, 发送三种测试payload #
         self.attackres_response = self.send_request(url=target+'/', params={
@@ -240,7 +240,9 @@ class WAFScan(object):
             'c': self.lfistring
         })
         if not self.attackres_response:  # 如果目标访问失败，就直接退出
-            return self.waf_results
+            logger.info('Blocking is being done at connection/packet level.')
+            self.waf_results.append(self.buildResultRecord(target, 'generic'))  # 攻击请求失败的话，大概率有WAF
+            return
 
         # 初始化插件数据 #
         waf_detections_rules = dict()
@@ -264,7 +266,7 @@ class WAFScan(object):
                 self.waf_results.append(self.buildResultRecord(target, 'generic'))
             else:
                 self.waf_results.append(self.buildResultRecord(target, None))
-        return self.waf_results
+        return
 
     def show_table(self) -> None:
         """表格展示数据"""
