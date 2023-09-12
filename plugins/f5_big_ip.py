@@ -8,7 +8,10 @@ NAME = 'F5 BIG-IP (F5 BIG-IP)'
 
 
 def is_waf(self):
-    if self.matchContent(r'操作可能存在安全隐患'):
+    if self.matchContent('<title>操作可能存在安全隐患</title>'):
+        return True
+
+    if self.matchCookie(r'^BIGipServerDS', attack=True):
         return True
 
     return False

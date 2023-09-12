@@ -57,7 +57,7 @@ class WAFScan(object):
             response = httpx.get(url=url, params=params, headers=self.headers, verify=False, follow_redirects=True)
             return response
         except Exception as e:
-            # logger.error(f"{url} {e}")
+            logger.error(f"{url} {e}")
             return
 
     def matchHeader(self, headermatch, attack=True) -> bool:
@@ -239,6 +239,7 @@ class WAFScan(object):
             'b': self.sqlistring,
             'c': self.lfistring
         })
+        
         if not self.attackres_response:  # 如果目标访问失败，就直接退出
             logger.info('Blocking is being done at connection/packet level.')
             self.waf_results.append(self.buildResultRecord(target, 'generic'))  # 攻击请求失败的话，大概率有WAF
